@@ -16,19 +16,29 @@ logger = logging.getLogger(__name__)
 
 COLLECTION_NAME = "bis_knowledge"
 
-# Initialize Models
-try:
-    embedder = SentenceTransformer('all-MiniLM-L6-v2')
-    # Use local Qdrant DB
-    qdrant = QdrantClient(path="./qdrant_db")
-    
-    # Initialize Groq client
-    api_key = os.getenv("GROQ_API_KEY")
-    if not api_key:
-        logger.warning("GROQ_API_KEY environment variable not set. LLM queries will fail.")
-    groq_client = Groq(api_key=api_key)
-except Exception as e:
-    logger.error(f"Error initializing models: {e}")
+# ── Lazy-loaded globals (initialized on first request, not at import time) ──
+# This lets the server start and bind the port IMMEDIATELY, fixing Render timeouts.
+_embedder = None
+_qdrant = None
+_groq_client = None
+
+def _get_models():
+    """Lazy-initialize heavy models on first call."""
+    global _embedder, _qdrant, _groq_client
+    if _embedder is None:
+        logger.info("Loading SentenceTransformer model...")
+        _embedder = SentenceTransformer('all-MiniLM-L6-v2')
+        logger.info("Model loaded.")
+    if _qdrant is None:
+        logger.info("Connecting to Qdrant DB...")
+        _qdrant = QdrantClient(path="./qdrant_db")
+        logger.info("Qdrant connected.")
+    if _groq_client is None:
+        api_key = os.getenv("GROQ_API_KEY")
+        if not api_key:
+            logger.warning("GROQ_API_KEY not set. LLM queries will fail.")
+        _groq_client = Groq(api_key=api_key)
+    return _embedder, _qdrant, _groq_client
 
 # Simple in-memory memory management (session_id -> list of messages)
 # In production, use Redis or a database
@@ -174,6 +184,7 @@ def retrieve_context(query: str, session_id: str = "", top_k: int = 5) -> Tuple[
                 enriched_query = f"{query} {context_hint}"
         
         # Convert query to vector
+        embedder, qdrant, _ = _get_models()
         query_vector = embedder.encode(enriched_query).tolist()
         
         # Search Qdrant (using query_points for qdrant-client >= 1.12)
@@ -269,6 +280,7 @@ def generate_answer(query: str, session_id: str) -> Dict[str, Any]:
     
     # Step 5: Call LLM
     try:
+        _, _, groq_client = _get_models()
         response = groq_client.chat.completions.create(
             model='llama-3.1-8b-instant',
             messages=[
