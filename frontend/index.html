@@ -528,7 +528,12 @@
 // ═══════════════════════════════════════════════
 // CONFIG
 // ═══════════════════════════════════════════════
-const API_URL = 'http://localhost:8000/chat';
+// Set your Render backend URL here after deploying (e.g. 'https://bis-chatbot-backend.onrender.com')
+const RENDER_BACKEND_URL = '';  // ← PASTE YOUR RENDER URL HERE AFTER DEPLOYING
+
+const API_URL = RENDER_BACKEND_URL
+    ? `${RENDER_BACKEND_URL}/chat`
+    : 'http://localhost:8000/chat';
 let sessionId = null;
 
 const chatForm     = document.getElementById('chat-form');
