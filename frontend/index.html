@@ -659,6 +659,71 @@
         }
 
         /* ═══════════════════════════════════════════════
+           IMAGE PREVIEW STRIP
+           ═══════════════════════════════════════════════ */
+        .image-preview-strip {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: var(--surface-alt);
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+
+        .image-preview-strip img {
+            width: 56px;
+            height: 56px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .preview-filename {
+            flex: 1;
+            font-size: 12px;
+            color: var(--text-secondary);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .remove-image-btn {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+            transition: background 0.15s;
+        }
+
+        .remove-image-btn:hover {
+            background: #EF4444;
+        }
+
+        /* Image displayed inside a user chat bubble */
+        .chat-image {
+            max-width: 240px;
+            max-height: 200px;
+            border-radius: 10px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .chat-image-caption {
+            margin: 0;
+        }
+
+        /* ═══════════════════════════════════════════════
            RESPONSIVE
            ═══════════════════════════════════════════════ */
         @media (max-width: 640px) {
@@ -742,13 +807,20 @@
 
         <!-- ═══ INPUT AREA ═══ -->
         <div class="input-area">
+            <!-- Image preview strip (hidden until an image is selected) -->
+            <div id="image-preview-strip" class="image-preview-strip" style="display:none;">
+                <img id="preview-img" src="" alt="Selected image">
+                <div class="preview-filename" id="preview-filename"></div>
+                <button type="button" class="remove-image-btn" id="remove-image-btn" title="Remove image">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
             <form id="chat-form" class="input-wrap">
                 <button type="button" class="attach-btn" id="attach-button" title="Attach Image" onclick="document.getElementById('file-input').click()">
                     <i class="fas fa-plus"></i>
                 </button>
-                <input type="file" id="file-input" accept="image/*" style="display: none;" onchange="alert('This is a dummy upload button for UI purposes only.')">
-                <input type="text" id="message-input" placeholder="Ask a question about BIS..." autocomplete="off"
-                    required>
+                <input type="file" id="file-input" accept="image/*" style="display: none;">
+                <input type="text" id="message-input" placeholder="Ask a question or describe what to analyze in your image..." autocomplete="off">
                 <button type="submit" class="send-btn" id="send-button">
                     <i class="fas fa-paper-plane"></i>
                 </button>
@@ -767,6 +839,9 @@
         const API_URL = RENDER_BACKEND_URL
             ? `${RENDER_BACKEND_URL}/chat`
             : 'http://localhost:8000/chat';
+        const IMAGE_API_URL = RENDER_BACKEND_URL
+            ? `${RENDER_BACKEND_URL}/chat-with-image`
+            : 'http://localhost:8000/chat-with-image';
         let sessionId = null;
 
         const chatForm = document.getElementById('chat-form');
@@ -775,6 +850,15 @@
         const sendButton = document.getElementById('send-button');
         const clearBtn = document.getElementById('clear-chat-btn');
         const themeToggle = document.getElementById('theme-toggle');
+        const fileInput = document.getElementById('file-input');
+        const imagePreviewStrip = document.getElementById('image-preview-strip');
+        const previewImg = document.getElementById('preview-img');
+        const previewFilename = document.getElementById('preview-filename');
+        const removeImageBtn = document.getElementById('remove-image-btn');
+
+        // Currently selected image (File object + data URL)
+        let selectedImageFile = null;
+        let selectedImageDataUrl = null;
 
         // ═══════════════════════════════════════════════
         // DARK MODE
@@ -791,6 +875,48 @@
             const current = document.documentElement.getAttribute('data-theme');
             applyTheme(current === 'dark' ? 'light' : 'dark');
         });
+
+        // ═══════════════════════════════════════════════
+        // IMAGE SELECTION
+        // ═══════════════════════════════════════════════
+        function removeSelectedImage() {
+            selectedImageFile = null;
+            selectedImageDataUrl = null;
+            fileInput.value = '';
+            previewImg.src = '';
+            previewFilename.textContent = '';
+            imagePreviewStrip.style.display = 'none';
+        }
+
+        fileInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (!file) return;
+
+            if (!file.type.startsWith('image/')) {
+                alert('Please select an image file (JPEG, PNG, WebP, or GIF).');
+                this.value = '';
+                return;
+            }
+
+            if (file.size > 4 * 1024 * 1024) {
+                alert('Image size must be less than 4 MB.');
+                this.value = '';
+                return;
+            }
+
+            selectedImageFile = file;
+            previewFilename.textContent = file.name;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                selectedImageDataUrl = e.target.result;
+                previewImg.src = selectedImageDataUrl;
+                imagePreviewStrip.style.display = 'flex';
+            };
+            reader.readAsDataURL(file);
+        });
+
+        removeImageBtn.addEventListener('click', removeSelectedImage);
 
         // ═══════════════════════════════════════════════
         // QUICK SUGGESTIONS
@@ -853,7 +979,7 @@
         // ═══════════════════════════════════════════════
         // CREATE MESSAGE ELEMENT
         // ═══════════════════════════════════════════════
-        function createMessage(text, isUser, sources = []) {
+        function createMessage(text, isUser, sources = [], imageDataUrl = null) {
             const row = document.createElement('div');
             row.className = `msg-row ${isUser ? 'user' : 'bot'}`;
 
@@ -869,7 +995,20 @@
             bubble.className = `bubble ${isUser ? 'user' : 'bot'}`;
 
             if (isUser) {
-                bubble.textContent = text;
+                // Show attached image above the text
+                if (imageDataUrl) {
+                    const img = document.createElement('img');
+                    img.src = imageDataUrl;
+                    img.className = 'chat-image';
+                    img.alt = 'Uploaded image';
+                    bubble.appendChild(img);
+                }
+                if (text) {
+                    const p = document.createElement('p');
+                    p.className = 'chat-image-caption';
+                    p.textContent = text;
+                    bubble.appendChild(p);
+                }
             } else {
                 // Strip inline source URLs from the text to avoid duplication
                 const cleanedText = stripSourcesFromText(text);
@@ -956,15 +1095,23 @@
         chatForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const message = messageInput.value.trim();
-            if (!message) return;
+            const hasImage = !!selectedImageFile;
+
+            if (!message && !hasImage) return;
+
+            // Capture image state before clearing
+            const imageFile = selectedImageFile;
+            const imageDataUrl = selectedImageDataUrl;
+            const displayMessage = message || 'What is in this image?';
 
             messageInput.value = '';
+            if (hasImage) removeSelectedImage();
             messageInput.disabled = true;
             sendButton.disabled = true;
             sendButton.innerHTML = '<div class="spinner"></div>';
 
-            // Add user message
-            chatMessages.appendChild(createMessage(message, true));
+            // Add user message (with image thumbnail if attached)
+            chatMessages.appendChild(createMessage(displayMessage, true, [], imageDataUrl));
             scrollToBottom();
 
             // Show typing indicator
@@ -973,17 +1120,39 @@
             scrollToBottom();
 
             try {
-                const body = { message };
-                if (sessionId) body.session_id = sessionId;
+                let data;
 
-                const res = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(body)
-                });
+                if (hasImage) {
+                    // Multimodal path — send image + question to Gemini endpoint
+                    const formData = new FormData();
+                    formData.append('message', displayMessage);
+                    if (sessionId) formData.append('session_id', sessionId);
+                    formData.append('image', imageFile);
 
-                if (!res.ok) throw new Error(`Server error: ${res.status}`);
-                const data = await res.json();
+                    const res = await fetch(IMAGE_API_URL, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!res.ok) {
+                        const err = await res.json().catch(() => ({}));
+                        throw new Error(err.detail || `Server error: ${res.status}`);
+                    }
+                    data = await res.json();
+                } else {
+                    // Text-only path — existing RAG pipeline
+                    const body = { message };
+                    if (sessionId) body.session_id = sessionId;
+
+                    const res = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(body)
+                    });
+
+                    if (!res.ok) throw new Error(`Server error: ${res.status}`);
+                    data = await res.json();
+                }
 
                 if (data.session_id) sessionId = data.session_id;
 
@@ -994,7 +1163,9 @@
                 console.error('Chat error:', err);
                 indicator.remove();
                 chatMessages.appendChild(createMessage(
-                    'Sorry, the server is temporarily unavailable. It may be waking up — please try again in 15-20 seconds.',
+                    err.message && !err.message.startsWith('Server error')
+                        ? `⚠️ ${err.message}`
+                        : 'Sorry, the server is temporarily unavailable. It may be waking up — please try again in 15-20 seconds.',
                     false
                 ));
             } finally {
