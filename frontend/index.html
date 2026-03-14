@@ -761,7 +761,7 @@ chatForm.addEventListener('submit', async (e) => {
         console.error('Chat error:', err);
         indicator.remove();
         chatMessages.appendChild(createMessage(
-            'Sorry, I couldn\'t connect to the server. Please make sure the backend is running on port 8000.',
+            'Sorry, the server is temporarily unavailable. It may be waking up — please try again in 15-20 seconds.',
             false
         ));
     } finally {
