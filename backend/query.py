@@ -2,9 +2,6 @@ import os
 import logging
 import traceback
 from typing import List, Dict, Any, Tuple
-from sentence_transformers import SentenceTransformer
-from qdrant_client import QdrantClient
-from groq import Groq
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -17,7 +14,8 @@ logger = logging.getLogger(__name__)
 COLLECTION_NAME = "bis_knowledge"
 
 # ── Lazy-loaded globals (initialized on first request, not at import time) ──
-# This lets the server start and bind the port IMMEDIATELY, fixing Render timeouts.
+# Heavy libraries (PyTorch, SentenceTransformers) are imported INSIDE this function
+# so the server can start and bind the port IMMEDIATELY on Render.
 _embedder = None
 _qdrant = None
 _groq_client = None
@@ -26,14 +24,17 @@ def _get_models():
     """Lazy-initialize heavy models on first call."""
     global _embedder, _qdrant, _groq_client
     if _embedder is None:
-        logger.info("Loading SentenceTransformer model...")
+        logger.info("Importing SentenceTransformer (this loads PyTorch)...")
+        from sentence_transformers import SentenceTransformer
         _embedder = SentenceTransformer('all-MiniLM-L6-v2')
-        logger.info("Model loaded.")
+        logger.info("SentenceTransformer model loaded.")
     if _qdrant is None:
         logger.info("Connecting to Qdrant DB...")
+        from qdrant_client import QdrantClient
         _qdrant = QdrantClient(path="./qdrant_db")
         logger.info("Qdrant connected.")
     if _groq_client is None:
+        from groq import Groq
         api_key = os.getenv("GROQ_API_KEY")
         if not api_key:
             logger.warning("GROQ_API_KEY not set. LLM queries will fail.")
