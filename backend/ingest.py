@@ -2,7 +2,7 @@ import json
 import logging
 import uuid
 from typing import List, Dict, Any
-from sentence_transformers import SentenceTransformer
+from fastembed import TextEmbedding
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams, PointStruct
 
@@ -15,8 +15,8 @@ COLLECTION_NAME = "bis_knowledge"
 CHUNK_SIZE = 500  # approximate tokens/words per chunk
 CHUNK_OVERLAP = 50
 
-# Initialize embedding model (runs locally)
-embedder = SentenceTransformer('all-MiniLM-L6-v2')
+# Initialize embedding model (lightweight ONNX-based)
+embedder = TextEmbedding(model_name='sentence-transformers/all-MiniLM-L6-v2')
 VECTOR_SIZE = 384 # Size of embeddings for all-MiniLM-L6-v2
 
 def chunk_text(text: str, chunk_size: int = CHUNK_SIZE, overlap: int = CHUNK_OVERLAP) -> List[str]:
@@ -81,7 +81,7 @@ def main():
                 continue
                 
             # Generate embedding
-            vector = embedder.encode(chunk).tolist()
+            vector = list(embedder.embed([chunk]))[0].tolist()
             
             # Create a unique ID for the chunk
             point_id = str(uuid.uuid4())

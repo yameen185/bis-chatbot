@@ -24,10 +24,10 @@ def _get_models():
     """Lazy-initialize heavy models on first call."""
     global _embedder, _qdrant, _groq_client
     if _embedder is None:
-        logger.info("Importing SentenceTransformer (this loads PyTorch)...")
-        from sentence_transformers import SentenceTransformer
-        _embedder = SentenceTransformer('all-MiniLM-L6-v2')
-        logger.info("SentenceTransformer model loaded.")
+        logger.info("Loading FastEmbed model (lightweight ONNX)...")
+        from fastembed import TextEmbedding
+        _embedder = TextEmbedding(model_name='sentence-transformers/all-MiniLM-L6-v2')
+        logger.info("Embedding model loaded.")
     if _qdrant is None:
         logger.info("Connecting to Qdrant DB...")
         from qdrant_client import QdrantClient
@@ -186,7 +186,7 @@ def retrieve_context(query: str, session_id: str = "", top_k: int = 5) -> Tuple[
         
         # Convert query to vector
         embedder, qdrant, _ = _get_models()
-        query_vector = embedder.encode(enriched_query).tolist()
+        query_vector = list(embedder.embed([enriched_query]))[0].tolist()
         
         # Search Qdrant (using query_points for qdrant-client >= 1.12)
         search_result = qdrant.query_points(

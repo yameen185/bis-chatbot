@@ -3,7 +3,7 @@ uvicorn
 python-multipart
 beautifulsoup4
 requests
-sentence-transformers
+fastembed
 qdrant-client
 groq
 pydantic
