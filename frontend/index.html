@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BIS AI Assistant — Bureau of Indian Standards</title>
-    <meta name="description" content="Official AI chatbot for the Bureau of Indian Standards. Ask questions about BIS certifications, ISI mark, hallmarking, standards, and more.">
+    <meta name="description"
+        content="Official AI chatbot for the Bureau of Indian Standards. Ask questions about BIS certifications, ISI mark, hallmarking, standards, and more.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -27,11 +29,11 @@
             --text-muted: #9CA3AF;
             --border: #E5E7EB;
             --border-light: #F3F4F6;
-            --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-            --shadow-lg: 0 4px 14px rgba(0,0,0,0.08);
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 4px 14px rgba(0, 0, 0, 0.08);
             --radius: 16px;
             --radius-sm: 10px;
-            --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             --scrollbar-thumb: #CBD5E1;
             --scrollbar-track: #F1F5F9;
             --header-bg: linear-gradient(135deg, #1E40AF 0%, #2563EB 50%, #3B82F6 100%);
@@ -39,6 +41,7 @@
             --copy-hover: #EFF6FF;
             --source-bg: #F8FAFC;
         }
+
         [data-theme="dark"] {
             --bg: #0F172A;
             --surface: #1E293B;
@@ -49,8 +52,8 @@
             --text-muted: #64748B;
             --border: #334155;
             --border-light: #1E293B;
-            --shadow: 0 1px 3px rgba(0,0,0,0.3);
-            --shadow-lg: 0 4px 14px rgba(0,0,0,0.4);
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 4px 14px rgba(0, 0, 0, 0.4);
             --primary-light: #1E3A5F;
             --scrollbar-thumb: #475569;
             --scrollbar-track: #1E293B;
@@ -63,8 +66,18 @@
         /* ═══════════════════════════════════════════════
            BASE
            ═══════════════════════════════════════════════ */
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { height: 100%; }
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            height: 100%;
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--bg);
@@ -79,10 +92,22 @@
         /* ═══════════════════════════════════════════════
            SCROLLBAR
            ═══════════════════════════════════════════════ */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
-        ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
 
         /* ═══════════════════════════════════════════════
            HEADER
@@ -95,57 +120,97 @@
             align-items: center;
             justify-content: space-between;
             z-index: 20;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
         }
-        .header-left { display: flex; align-items: center; gap: 12px; }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .header-logo {
-            width: 40px; height: 40px;
-            background: rgba(255,255,255,0.15);
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.15);
             border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 18px;
             backdrop-filter: blur(8px);
         }
-        .header-title { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; }
-        .header-subtitle { font-size: 11px; opacity: 0.75; margin-top: 1px; }
-        .header-actions { display: flex; align-items: center; gap: 8px; }
+
+        .header-title {
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .header-subtitle {
+            font-size: 11px;
+            opacity: 0.75;
+            margin-top: 1px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         .header-btn {
-            background: rgba(255,255,255,0.12);
-            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             color: #fff;
             border-radius: 10px;
             padding: 8px 12px;
             font-size: 12px;
             cursor: pointer;
             transition: background var(--transition);
-            display: flex; align-items: center; gap: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
             font-family: inherit;
         }
-        .header-btn:hover { background: rgba(255,255,255,0.22); }
+
+        .header-btn:hover {
+            background: rgba(255, 255, 255, 0.22);
+        }
 
         /* Dark mode toggle */
         .theme-toggle {
-            width: 44px; height: 24px;
-            background: rgba(255,255,255,0.2);
+            width: 44px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.15);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             cursor: pointer;
             position: relative;
             transition: background var(--transition);
         }
+
         .theme-toggle::after {
             content: '☀️';
             font-size: 12px;
             position: absolute;
-            top: 2px; left: 3px;
-            width: 18px; height: 18px;
+            top: 2px;
+            left: 3px;
+            width: 18px;
+            height: 18px;
             background: #fff;
             border-radius: 50%;
             transition: transform var(--transition);
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
         }
-        [data-theme="dark"] .theme-toggle { background: rgba(255,255,255,0.1); }
+
+        [data-theme="dark"] .theme-toggle {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
         [data-theme="dark"] .theme-toggle::after {
             content: '🌙';
             transform: translateX(19px);
@@ -165,6 +230,7 @@
             background: var(--surface-alt);
             transition: background var(--transition);
         }
+
         @media (min-width: 900px) {
             .chat-container {
                 border-left: 1px solid var(--border);
@@ -184,8 +250,11 @@
             gap: 20px;
             scroll-behavior: smooth;
         }
+
         @media (min-width: 640px) {
-            .messages { padding: 28px 24px; }
+            .messages {
+                padding: 28px 24px;
+            }
         }
 
         /* ═══════════════════════════════════════════════
@@ -197,24 +266,40 @@
             animation: msgIn 0.35s ease-out both;
             max-width: 100%;
         }
-        .msg-row.user { flex-direction: row-reverse; }
+
+        .msg-row.user {
+            flex-direction: row-reverse;
+        }
+
         @keyframes msgIn {
-            from { opacity: 0; transform: translateY(12px); }
-            to   { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Avatar */
         .avatar {
-            width: 36px; height: 36px;
+            width: 36px;
+            height: 36px;
             border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             flex-shrink: 0;
             font-size: 14px;
         }
+
         .avatar.bot {
             background: var(--primary-light);
             color: var(--primary);
         }
+
         .avatar.human {
             background: var(--primary);
             color: #fff;
@@ -230,11 +315,13 @@
             position: relative;
             transition: background var(--transition), box-shadow var(--transition);
         }
+
         .bubble.bot {
             background: var(--bubble-assistant);
             color: var(--text);
             border-radius: 4px var(--radius) var(--radius) var(--radius);
         }
+
         .bubble.user {
             background: var(--bubble-user);
             color: #fff;
@@ -244,23 +331,38 @@
         /* ═══════════════════════════════════════════════
            MARKDOWN / CONTENT FORMATTING
            ═══════════════════════════════════════════════ */
-        .bubble.bot .msg-content p { margin-bottom: 10px; }
-        .bubble.bot .msg-content p:last-child { margin-bottom: 0; }
+        .bubble.bot .msg-content p {
+            margin-bottom: 10px;
+        }
+
+        .bubble.bot .msg-content p:last-child {
+            margin-bottom: 0;
+        }
+
         .bubble.bot .msg-content ul,
         .bubble.bot .msg-content ol {
             margin: 6px 0 10px 20px;
         }
-        .bubble.bot .msg-content li { margin-bottom: 4px; }
-        .bubble.bot .msg-content strong { font-weight: 600; }
+
+        .bubble.bot .msg-content li {
+            margin-bottom: 4px;
+        }
+
+        .bubble.bot .msg-content strong {
+            font-weight: 600;
+        }
+
         .bubble.bot .msg-content a {
             color: var(--primary);
             text-decoration: none;
             border-bottom: 1px solid transparent;
             transition: border-color 0.15s;
         }
+
         .bubble.bot .msg-content a:hover {
             border-bottom-color: var(--primary);
         }
+
         .bubble.bot .msg-content h1,
         .bubble.bot .msg-content h2,
         .bubble.bot .msg-content h3 {
@@ -277,6 +379,7 @@
             padding-top: 12px;
             border-top: 1px solid var(--border);
         }
+
         .sources-label {
             font-size: 11px;
             font-weight: 600;
@@ -284,8 +387,11 @@
             letter-spacing: 0.8px;
             color: var(--text-muted);
             margin-bottom: 8px;
-            display: flex; align-items: center; gap: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
+
         .source-chip {
             display: flex;
             align-items: center;
@@ -301,11 +407,18 @@
             color: var(--primary);
             overflow: hidden;
         }
+
         .source-chip:hover {
             background: var(--primary-light);
             border-color: var(--primary);
         }
-        .source-chip i { flex-shrink: 0; font-size: 10px; opacity: 0.7; }
+
+        .source-chip i {
+            flex-shrink: 0;
+            font-size: 10px;
+            opacity: 0.7;
+        }
+
         .source-chip span {
             white-space: nowrap;
             overflow: hidden;
@@ -320,6 +433,7 @@
             gap: 4px;
             margin-top: 10px;
         }
+
         .action-btn {
             background: transparent;
             border: 1px solid var(--border);
@@ -329,14 +443,18 @@
             font-size: 11px;
             cursor: pointer;
             transition: all 0.15s;
-            display: flex; align-items: center; gap: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
             font-family: inherit;
         }
+
         .action-btn:hover {
             background: var(--copy-hover);
             color: var(--primary);
             border-color: var(--primary);
         }
+
         .action-btn.copied {
             color: #10B981;
             border-color: #10B981;
@@ -345,32 +463,64 @@
         /* ═══════════════════════════════════════════════
            TYPING INDICATOR
            ═══════════════════════════════════════════════ */
-        .typing-row { display: flex; gap: 12px; animation: msgIn 0.3s ease-out; }
+        .typing-row {
+            display: flex;
+            gap: 12px;
+            animation: msgIn 0.3s ease-out;
+        }
+
         .typing-dots {
             background: var(--bubble-assistant);
             border-radius: 4px var(--radius) var(--radius) var(--radius);
             padding: 16px 22px;
             box-shadow: var(--shadow);
-            display: flex; align-items: center; gap: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
             transition: background var(--transition);
         }
+
         .typing-dots span {
-            width: 8px; height: 8px;
+            width: 8px;
+            height: 8px;
             background: var(--primary);
             border-radius: 50%;
             animation: dotBounce 1.4s infinite ease-in-out both;
         }
-        .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
-        .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+        .typing-dots span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .typing-dots span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
         @keyframes dotBounce {
-            0%, 80%, 100% { transform: scale(0.4); opacity: 0.4; }
-            40% { transform: scale(1); opacity: 1; }
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0.4);
+                opacity: 0.4;
+            }
+
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         /* ═══════════════════════════════════════════════
            SUGGESTION CHIPS (welcome)
            ═══════════════════════════════════════════════ */
-        .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
         .chip {
             background: var(--source-bg);
             border: 1px solid var(--border);
@@ -382,6 +532,7 @@
             transition: all 0.15s;
             font-family: inherit;
         }
+
         .chip:hover {
             background: var(--primary-light);
             color: var(--primary);
@@ -397,6 +548,7 @@
             background: var(--surface);
             transition: background var(--transition), border-color var(--transition);
         }
+
         .input-wrap {
             display: flex;
             align-items: center;
@@ -406,10 +558,12 @@
             padding: 4px 4px 4px 18px;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
+
         .input-wrap:focus-within {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
         }
+
         .input-wrap input {
             flex: 1;
             border: none;
@@ -420,30 +574,54 @@
             color: var(--text);
             padding: 10px 0;
         }
-        .input-wrap input::placeholder { color: var(--text-muted); }
+
+        .input-wrap input::placeholder {
+            color: var(--text-muted);
+        }
+
         .send-btn {
-            width: 42px; height: 42px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             background: var(--primary);
             color: #fff;
             border: none;
             cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: background 0.15s, transform 0.1s;
             flex-shrink: 0;
             font-size: 15px;
         }
-        .send-btn:hover { background: var(--primary-hover); }
-        .send-btn:active { transform: scale(0.92); }
-        .send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        .send-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .send-btn:active {
+            transform: scale(0.92);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
         .send-btn .spinner {
-            width: 18px; height: 18px;
-            border: 2px solid rgba(255,255,255,0.3);
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
             border-top-color: #fff;
             border-radius: 50%;
             animation: spin 0.6s linear infinite;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
         .input-footer {
             text-align: center;
@@ -456,21 +634,44 @@
            RESPONSIVE
            ═══════════════════════════════════════════════ */
         @media (max-width: 640px) {
-            .header { padding: 12px 14px; }
-            .header-title { font-size: 15px; }
-            .header-subtitle { font-size: 10px; }
-            .header-btn span { display: none; }
-            .bubble { max-width: 88%; font-size: 13px; padding: 12px 14px; }
-            .input-area { padding: 12px; }
+            .header {
+                padding: 12px 14px;
+            }
+
+            .header-title {
+                font-size: 15px;
+            }
+
+            .header-subtitle {
+                font-size: 10px;
+            }
+
+            .header-btn span {
+                display: none;
+            }
+
+            .bubble {
+                max-width: 88%;
+                font-size: 13px;
+                padding: 12px 14px;
+            }
+
+            .input-area {
+                padding: 12px;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <!-- ═══ HEADER ═══ -->
     <header class="header">
         <div class="header-left">
-            <div class="header-logo"><i class="fas fa-shield-halved"></i></div>
+            <div class="header-logo">
+                <img src="https://commons.wikimedia.org/wiki/File:Bureau_of_Indian_Standards_Logo.svg" alt="BIS Logo"
+                    class="bis-logo-img">
+            </div>
             <div>
                 <div class="header-title">BIS Assistant</div>
                 <div class="header-subtitle">Bureau of Indian Standards Knowledge Bot</div>
@@ -492,13 +693,19 @@
                 <div class="avatar bot"><i class="fas fa-robot"></i></div>
                 <div class="bubble bot">
                     <div class="msg-content">
-                        <p>👋 Hello! I'm the <strong>BIS Assistant</strong> — your AI guide to the Bureau of Indian Standards.</p>
-                        <p>Ask me anything about BIS certifications, ISI mark, hallmarking, standards, consumer programs, and more.</p>
+                        <p>👋 Hello! I'm the <strong>BIS Assistant</strong> — your AI guide to the Bureau of Indian
+                            Standards.</p>
+                        <p>Ask me anything about BIS certifications, ISI mark, hallmarking, standards, consumer
+                            programs, and more.</p>
                     </div>
                     <div class="chips">
-                        <button class="chip" onclick="setInput('What is BIS and what are its functions?')">What is BIS?</button>
-                        <button class="chip" onclick="setInput('What types of BIS certification schemes exist?')">Certification schemes</button>
-                        <button class="chip" onclick="setInput('How do I apply for a hallmark license?')">Hallmark process</button>
+                        <button class="chip" onclick="setInput('What is BIS and what are its functions?')">What is
+                            BIS?</button>
+                        <button class="chip"
+                            onclick="setInput('What types of BIS certification schemes exist?')">Certification
+                            schemes</button>
+                        <button class="chip" onclick="setInput('How do I apply for a hallmark license?')">Hallmark
+                            process</button>
                         <button class="chip" onclick="setInput('What is the ISI mark?')">ISI Mark</button>
                         <button class="chip" onclick="setInput('Tell me about BIS laboratories')">BIS Labs</button>
                     </div>
@@ -509,13 +716,8 @@
         <!-- ═══ INPUT AREA ═══ -->
         <div class="input-area">
             <form id="chat-form" class="input-wrap">
-                <input
-                    type="text"
-                    id="message-input"
-                    placeholder="Ask a question about BIS..."
-                    autocomplete="off"
-                    required
-                >
+                <input type="text" id="message-input" placeholder="Ask a question about BIS..." autocomplete="off"
+                    required>
                 <button type="submit" class="send-btn" id="send-button">
                     <i class="fas fa-paper-plane"></i>
                 </button>
@@ -524,265 +726,266 @@
         </div>
     </main>
 
-<script>
-// ═══════════════════════════════════════════════
-// CONFIG
-// ═══════════════════════════════════════════════
-// Set your Render backend URL here after deploying (e.g. 'https://bis-chatbot-backend.onrender.com')
-const RENDER_BACKEND_URL = 'https://bis-chatbot-backend.onrender.com';  // Live backend
+    <script>
+        // ═══════════════════════════════════════════════
+        // CONFIG
+        // ═══════════════════════════════════════════════
+        // Set your Render backend URL here after deploying (e.g. 'https://bis-chatbot-backend.onrender.com')
+        const RENDER_BACKEND_URL = 'https://bis-chatbot-backend.onrender.com';  // Live backend
 
-const API_URL = RENDER_BACKEND_URL
-    ? `${RENDER_BACKEND_URL}/chat`
-    : 'http://localhost:8000/chat';
-let sessionId = null;
+        const API_URL = RENDER_BACKEND_URL
+            ? `${RENDER_BACKEND_URL}/chat`
+            : 'http://localhost:8000/chat';
+        let sessionId = null;
 
-const chatForm     = document.getElementById('chat-form');
-const messageInput = document.getElementById('message-input');
-const chatMessages = document.getElementById('chat-messages');
-const sendButton   = document.getElementById('send-button');
-const clearBtn     = document.getElementById('clear-chat-btn');
-const themeToggle  = document.getElementById('theme-toggle');
+        const chatForm = document.getElementById('chat-form');
+        const messageInput = document.getElementById('message-input');
+        const chatMessages = document.getElementById('chat-messages');
+        const sendButton = document.getElementById('send-button');
+        const clearBtn = document.getElementById('clear-chat-btn');
+        const themeToggle = document.getElementById('theme-toggle');
 
-// ═══════════════════════════════════════════════
-// DARK MODE
-// ═══════════════════════════════════════════════
-function applyTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('bis-theme', theme);
-}
-// Load saved preference
-const savedTheme = localStorage.getItem('bis-theme') || 'light';
-applyTheme(savedTheme);
+        // ═══════════════════════════════════════════════
+        // DARK MODE
+        // ═══════════════════════════════════════════════
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('bis-theme', theme);
+        }
+        // Load saved preference
+        const savedTheme = localStorage.getItem('bis-theme') || 'light';
+        applyTheme(savedTheme);
 
-themeToggle.addEventListener('click', () => {
-    const current = document.documentElement.getAttribute('data-theme');
-    applyTheme(current === 'dark' ? 'light' : 'dark');
-});
+        themeToggle.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            applyTheme(current === 'dark' ? 'light' : 'dark');
+        });
 
-// ═══════════════════════════════════════════════
-// QUICK SUGGESTIONS
-// ═══════════════════════════════════════════════
-function setInput(text) {
-    messageInput.value = text;
-    messageInput.focus();
-}
-
-// ═══════════════════════════════════════════════
-// TEXT FORMATTING
-// ═══════════════════════════════════════════════
-function stripSourcesFromText(text) {
-    // Remove "Sources:" block at the end (with everything after it)
-    let cleaned = text.replace(/\n*\*?\*?Sources?\*?\*?:?\s*\n([\s\S]*?)$/i, '');
-    // Remove 🔗 lines
-    cleaned = cleaned.replace(/\n*🔗[^\n]*/g, '');
-    // Remove "Note: ... visit https://..." lines
-    cleaned = cleaned.replace(/\n*\*?\*?Note\*?\*?:?[^\n]*https?:\/\/[^\n]*/gi, '');
-    // Remove "For more details..." lines containing URLs
-    cleaned = cleaned.replace(/\n*For (?:more |complete )?(?:details|information)[^\n]*https?:\/\/[^\n]*/gi, '');
-    // Remove standalone bullet/dash lines that are just URLs
-    cleaned = cleaned.replace(/\n*[-•*]\s*https?:\/\/[^\n]*/g, '');
-    // Remove any trailing line that is just a bare URL
-    cleaned = cleaned.replace(/\n*https?:\/\/[^\s\n]+\s*$/g, '');
-    return cleaned.trim();
-}
-
-function formatMarkdown(text) {
-    let html = text;
-    // Escape HTML entities
-    html = html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    // Bold **text**
-    html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-    // Italic *text*
-    html = html.replace(/(?<!\*)\*(?!\*)(.*?)(?<!\*)\*(?!\*)/g, '<em>$1</em>');
-    // Headings
-    html = html.replace(/^### (.*$)/gm, '<h3>$1</h3>');
-    html = html.replace(/^## (.*$)/gm, '<h2>$1</h2>');
-    html = html.replace(/^# (.*$)/gm, '<h1>$1</h1>');
-    // Bullet lists (- or •)
-    html = html.replace(/^[\-•]\s+(.*$)/gm, '<li>$1</li>');
-    html = html.replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>');
-    // Numbered lists
-    html = html.replace(/^\d+\.\s+(.*$)/gm, '<li>$1</li>');
-    // URLs → clickable links (but not already in anchor tags)
-    html = html.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
-    // Line breaks
-    html = html.replace(/\n/g, '<br>');
-    // Clean up double <br> inside lists
-    html = html.replace(/<\/li><br>/g, '</li>');
-    html = html.replace(/<br><li>/g, '<li>');
-    html = html.replace(/<br><\/ul>/g, '</ul>');
-    html = html.replace(/<br><ul>/g, '<ul>');
-    html = html.replace(/<br><h/g, '<h');
-
-    return html;
-}
-
-// ═══════════════════════════════════════════════
-// CREATE MESSAGE ELEMENT
-// ═══════════════════════════════════════════════
-function createMessage(text, isUser, sources = []) {
-    const row = document.createElement('div');
-    row.className = `msg-row ${isUser ? 'user' : 'bot'}`;
-
-    // Avatar
-    const avatar = document.createElement('div');
-    avatar.className = `avatar ${isUser ? 'human' : 'bot'}`;
-    avatar.innerHTML = isUser
-        ? '<i class="fas fa-user" style="font-size:13px"></i>'
-        : '<i class="fas fa-robot"></i>';
-
-    // Bubble
-    const bubble = document.createElement('div');
-    bubble.className = `bubble ${isUser ? 'user' : 'bot'}`;
-
-    if (isUser) {
-        bubble.textContent = text;
-    } else {
-        // Strip inline source URLs from the text to avoid duplication
-        const cleanedText = stripSourcesFromText(text);
-
-        const content = document.createElement('div');
-        content.className = 'msg-content';
-        content.innerHTML = formatMarkdown(cleanedText);
-        bubble.appendChild(content);
-
-        // ── Sources section ──
-        if (sources && sources.length > 0) {
-            const srcSection = document.createElement('div');
-            srcSection.className = 'sources-section';
-
-            const label = document.createElement('div');
-            label.className = 'sources-label';
-            label.innerHTML = '<i class="fas fa-bookmark"></i> Sources';
-            srcSection.appendChild(label);
-
-            sources.forEach(url => {
-                const chip = document.createElement('a');
-                chip.href = url;
-                chip.target = '_blank';
-                chip.rel = 'noopener';
-                chip.className = 'source-chip';
-                chip.innerHTML = `<i class="fas fa-arrow-up-right-from-square"></i><span>${url}</span>`;
-                srcSection.appendChild(chip);
-            });
-            bubble.appendChild(srcSection);
+        // ═══════════════════════════════════════════════
+        // QUICK SUGGESTIONS
+        // ═══════════════════════════════════════════════
+        function setInput(text) {
+            messageInput.value = text;
+            messageInput.focus();
         }
 
-        // ── Action bar (copy) ──
-        const actions = document.createElement('div');
-        actions.className = 'action-bar';
+        // ═══════════════════════════════════════════════
+        // TEXT FORMATTING
+        // ═══════════════════════════════════════════════
+        function stripSourcesFromText(text) {
+            // Remove "Sources:" block at the end (with everything after it)
+            let cleaned = text.replace(/\n*\*?\*?Sources?\*?\*?:?\s*\n([\s\S]*?)$/i, '');
+            // Remove 🔗 lines
+            cleaned = cleaned.replace(/\n*🔗[^\n]*/g, '');
+            // Remove "Note: ... visit https://..." lines
+            cleaned = cleaned.replace(/\n*\*?\*?Note\*?\*?:?[^\n]*https?:\/\/[^\n]*/gi, '');
+            // Remove "For more details..." lines containing URLs
+            cleaned = cleaned.replace(/\n*For (?:more |complete )?(?:details|information)[^\n]*https?:\/\/[^\n]*/gi, '');
+            // Remove standalone bullet/dash lines that are just URLs
+            cleaned = cleaned.replace(/\n*[-•*]\s*https?:\/\/[^\n]*/g, '');
+            // Remove any trailing line that is just a bare URL
+            cleaned = cleaned.replace(/\n*https?:\/\/[^\s\n]+\s*$/g, '');
+            return cleaned.trim();
+        }
 
-        const copyBtn = document.createElement('button');
-        copyBtn.className = 'action-btn';
-        copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
-        copyBtn.addEventListener('click', () => {
-            navigator.clipboard.writeText(text).then(() => {
-                copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied';
-                copyBtn.classList.add('copied');
-                setTimeout(() => {
-                    copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
-                    copyBtn.classList.remove('copied');
-                }, 2000);
-            });
-        });
-        actions.appendChild(copyBtn);
-        bubble.appendChild(actions);
-    }
+        function formatMarkdown(text) {
+            let html = text;
+            // Escape HTML entities
+            html = html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            // Bold **text**
+            html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            // Italic *text*
+            html = html.replace(/(?<!\*)\*(?!\*)(.*?)(?<!\*)\*(?!\*)/g, '<em>$1</em>');
+            // Headings
+            html = html.replace(/^### (.*$)/gm, '<h3>$1</h3>');
+            html = html.replace(/^## (.*$)/gm, '<h2>$1</h2>');
+            html = html.replace(/^# (.*$)/gm, '<h1>$1</h1>');
+            // Bullet lists (- or •)
+            html = html.replace(/^[\-•]\s+(.*$)/gm, '<li>$1</li>');
+            html = html.replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>');
+            // Numbered lists
+            html = html.replace(/^\d+\.\s+(.*$)/gm, '<li>$1</li>');
+            // URLs → clickable links (but not already in anchor tags)
+            html = html.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+            // Line breaks
+            html = html.replace(/\n/g, '<br>');
+            // Clean up double <br> inside lists
+            html = html.replace(/<\/li><br>/g, '</li>');
+            html = html.replace(/<br><li>/g, '<li>');
+            html = html.replace(/<br><\/ul>/g, '</ul>');
+            html = html.replace(/<br><ul>/g, '<ul>');
+            html = html.replace(/<br><h/g, '<h');
 
-    row.appendChild(avatar);
-    row.appendChild(bubble);
-    return row;
-}
+            return html;
+        }
 
-// ═══════════════════════════════════════════════
-// TYPING INDICATOR
-// ═══════════════════════════════════════════════
-function createTypingIndicator() {
-    const row = document.createElement('div');
-    row.className = 'typing-row';
-    row.id = 'typing-indicator';
-    row.innerHTML = `
+        // ═══════════════════════════════════════════════
+        // CREATE MESSAGE ELEMENT
+        // ═══════════════════════════════════════════════
+        function createMessage(text, isUser, sources = []) {
+            const row = document.createElement('div');
+            row.className = `msg-row ${isUser ? 'user' : 'bot'}`;
+
+            // Avatar
+            const avatar = document.createElement('div');
+            avatar.className = `avatar ${isUser ? 'human' : 'bot'}`;
+            avatar.innerHTML = isUser
+                ? '<i class="fas fa-user" style="font-size:13px"></i>'
+                : '<i class="fas fa-robot"></i>';
+
+            // Bubble
+            const bubble = document.createElement('div');
+            bubble.className = `bubble ${isUser ? 'user' : 'bot'}`;
+
+            if (isUser) {
+                bubble.textContent = text;
+            } else {
+                // Strip inline source URLs from the text to avoid duplication
+                const cleanedText = stripSourcesFromText(text);
+
+                const content = document.createElement('div');
+                content.className = 'msg-content';
+                content.innerHTML = formatMarkdown(cleanedText);
+                bubble.appendChild(content);
+
+                // ── Sources section ──
+                if (sources && sources.length > 0) {
+                    const srcSection = document.createElement('div');
+                    srcSection.className = 'sources-section';
+
+                    const label = document.createElement('div');
+                    label.className = 'sources-label';
+                    label.innerHTML = '<i class="fas fa-bookmark"></i> Sources';
+                    srcSection.appendChild(label);
+
+                    sources.forEach(url => {
+                        const chip = document.createElement('a');
+                        chip.href = url;
+                        chip.target = '_blank';
+                        chip.rel = 'noopener';
+                        chip.className = 'source-chip';
+                        chip.innerHTML = `<i class="fas fa-arrow-up-right-from-square"></i><span>${url}</span>`;
+                        srcSection.appendChild(chip);
+                    });
+                    bubble.appendChild(srcSection);
+                }
+
+                // ── Action bar (copy) ──
+                const actions = document.createElement('div');
+                actions.className = 'action-bar';
+
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'action-btn';
+                copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                copyBtn.addEventListener('click', () => {
+                    navigator.clipboard.writeText(text).then(() => {
+                        copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied';
+                        copyBtn.classList.add('copied');
+                        setTimeout(() => {
+                            copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                            copyBtn.classList.remove('copied');
+                        }, 2000);
+                    });
+                });
+                actions.appendChild(copyBtn);
+                bubble.appendChild(actions);
+            }
+
+            row.appendChild(avatar);
+            row.appendChild(bubble);
+            return row;
+        }
+
+        // ═══════════════════════════════════════════════
+        // TYPING INDICATOR
+        // ═══════════════════════════════════════════════
+        function createTypingIndicator() {
+            const row = document.createElement('div');
+            row.className = 'typing-row';
+            row.id = 'typing-indicator';
+            row.innerHTML = `
         <div class="avatar bot"><i class="fas fa-robot"></i></div>
         <div class="typing-dots"><span></span><span></span><span></span></div>
     `;
-    return row;
-}
+            return row;
+        }
 
-// ═══════════════════════════════════════════════
-// SCROLL
-// ═══════════════════════════════════════════════
-function scrollToBottom() {
-    requestAnimationFrame(() => {
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    });
-}
+        // ═══════════════════════════════════════════════
+        // SCROLL
+        // ═══════════════════════════════════════════════
+        function scrollToBottom() {
+            requestAnimationFrame(() => {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            });
+        }
 
-// ═══════════════════════════════════════════════
-// SEND MESSAGE
-// ═══════════════════════════════════════════════
-chatForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const message = messageInput.value.trim();
-    if (!message) return;
+        // ═══════════════════════════════════════════════
+        // SEND MESSAGE
+        // ═══════════════════════════════════════════════
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const message = messageInput.value.trim();
+            if (!message) return;
 
-    messageInput.value = '';
-    messageInput.disabled = true;
-    sendButton.disabled = true;
-    sendButton.innerHTML = '<div class="spinner"></div>';
+            messageInput.value = '';
+            messageInput.disabled = true;
+            sendButton.disabled = true;
+            sendButton.innerHTML = '<div class="spinner"></div>';
 
-    // Add user message
-    chatMessages.appendChild(createMessage(message, true));
-    scrollToBottom();
+            // Add user message
+            chatMessages.appendChild(createMessage(message, true));
+            scrollToBottom();
 
-    // Show typing indicator
-    const indicator = createTypingIndicator();
-    chatMessages.appendChild(indicator);
-    scrollToBottom();
+            // Show typing indicator
+            const indicator = createTypingIndicator();
+            chatMessages.appendChild(indicator);
+            scrollToBottom();
 
-    try {
-        const body = { message };
-        if (sessionId) body.session_id = sessionId;
+            try {
+                const body = { message };
+                if (sessionId) body.session_id = sessionId;
 
-        const res = await fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
+                const res = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+
+                if (!res.ok) throw new Error(`Server error: ${res.status}`);
+                const data = await res.json();
+
+                if (data.session_id) sessionId = data.session_id;
+
+                indicator.remove();
+                chatMessages.appendChild(createMessage(data.answer, false, data.sources));
+
+            } catch (err) {
+                console.error('Chat error:', err);
+                indicator.remove();
+                chatMessages.appendChild(createMessage(
+                    'Sorry, the server is temporarily unavailable. It may be waking up — please try again in 15-20 seconds.',
+                    false
+                ));
+            } finally {
+                sendButton.innerHTML = '<i class="fas fa-paper-plane"></i>';
+                messageInput.disabled = false;
+                sendButton.disabled = false;
+                messageInput.focus();
+                scrollToBottom();
+            }
         });
 
-        if (!res.ok) throw new Error(`Server error: ${res.status}`);
-        const data = await res.json();
-
-        if (data.session_id) sessionId = data.session_id;
-
-        indicator.remove();
-        chatMessages.appendChild(createMessage(data.answer, false, data.sources));
-
-    } catch (err) {
-        console.error('Chat error:', err);
-        indicator.remove();
-        chatMessages.appendChild(createMessage(
-            'Sorry, the server is temporarily unavailable. It may be waking up — please try again in 15-20 seconds.',
-            false
-        ));
-    } finally {
-        sendButton.innerHTML = '<i class="fas fa-paper-plane"></i>';
-        messageInput.disabled = false;
-        sendButton.disabled = false;
-        messageInput.focus();
-        scrollToBottom();
-    }
-});
-
-// ═══════════════════════════════════════════════
-// CLEAR CHAT
-// ═══════════════════════════════════════════════
-clearBtn.addEventListener('click', () => {
-    // Keep only the welcome message (first child)
-    while (chatMessages.children.length > 1) {
-        chatMessages.removeChild(chatMessages.lastChild);
-    }
-    sessionId = null;
-});
-</script>
+        // ═══════════════════════════════════════════════
+        // CLEAR CHAT
+        // ═══════════════════════════════════════════════
+        clearBtn.addEventListener('click', () => {
+            // Keep only the welcome message (first child)
+            while (chatMessages.children.length > 1) {
+                chatMessages.removeChild(chatMessages.lastChild);
+            }
+            sessionId = null;
+        });
+    </script>
 </body>
+
 </html>
