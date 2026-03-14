@@ -6,5 +6,6 @@ requests
 fastembed
 qdrant-client
 groq
+google-generativeai
 pydantic
 python-dotenv
