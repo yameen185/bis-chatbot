@@ -251,6 +251,9 @@ def generate_answer(query: str, session_id: str) -> Dict[str, Any]:
     5. Update conversation memory
     """
     
+    import time
+    start_time = time.time()
+    
     # Step 0: Pre-flight check — Is Groq API configured?
     if not os.getenv("GROQ_API_KEY"):
         return {
@@ -260,7 +263,6 @@ def generate_answer(query: str, session_id: str) -> Dict[str, Any]:
     
     # Step 1: Quick out-of-scope check
     if is_out_of_scope(query):
-        # Still update memory so user can ask BIS questions next
         if session_id not in conversation_memory:
             conversation_memory[session_id] = []
         conversation_memory[session_id].append({"role": "user", "content": query})
@@ -270,8 +272,13 @@ def generate_answer(query: str, session_id: str) -> Dict[str, Any]:
             "sources": []
         }
     
+    t1 = time.time()
+    logger.info(f"[{session_id}] Pre-checks took: {t1 - start_time:.2f}s")
+    
     # Step 2: Embed query and retrieve context (enriched with history for follow-ups)
     context, sources = retrieve_context(query, session_id=session_id)
+    t2 = time.time()
+    logger.info(f"[{session_id}] Retrieval (Embedding + Qdrant) took: {t2 - t1:.2f}s")
     
     # Step 3: Get conversation history
     history_str = get_chat_history_string(session_id)
@@ -279,19 +286,27 @@ def generate_answer(query: str, session_id: str) -> Dict[str, Any]:
     # Step 4: Build the system prompt
     system_message = SYSTEM_PROMPT.format(context=context, history=history_str)
     
+    t3 = time.time()
     # Step 5: Call LLM
     try:
         _, _, groq_client = _get_models()
+        t4 = time.time()
+        logger.info(f"[{session_id}] Model Loading (if cold) took: {t4 - t3:.2f}s")
+        
         response = groq_client.chat.completions.create(
             model='llama-3.1-8b-instant',
             messages=[
                 {"role": "system", "content": system_message},
                 {"role": "user", "content": query}
             ],
-            temperature=0.2,       # Low temperature for factual accuracy
-            max_tokens=1500,       # Allow longer responses for detailed answers
+            temperature=0.2,
+            max_tokens=1000,
             top_p=0.9,
         )
+        
+        t5 = time.time()
+        logger.info(f"[{session_id}] Groq LLM Generation took: {t5 - t4:.2f}s")
+        logger.info(f"[{session_id}] Total request time: {t5 - start_time:.2f}s")
         
         answer = response.choices[0].message.content
         
@@ -302,7 +317,6 @@ def generate_answer(query: str, session_id: str) -> Dict[str, Any]:
         conversation_memory[session_id].append({"role": "user", "content": query})
         conversation_memory[session_id].append({"role": "assistant", "content": answer})
         
-        # Trim memory if it grows too large (keep last 20 messages = 10 turns)
         if len(conversation_memory[session_id]) > 20:
             conversation_memory[session_id] = conversation_memory[session_id][-20:]
         

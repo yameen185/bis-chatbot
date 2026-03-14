@@ -561,8 +561,9 @@
             background: var(--input-bg);
             border: 1.5px solid var(--border);
             border-radius: 28px;
-            padding: 4px 4px 4px 18px;
+            padding: 4px 4px 4px 4px; /* Reduced left padding to account for attach button */
             transition: border-color 0.2s, box-shadow 0.2s;
+            gap: 4px;
         }
 
         .input-wrap:focus-within {
@@ -570,7 +571,28 @@
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
         }
 
-        .input-wrap input {
+        .attach-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s, color 0.15s;
+            flex-shrink: 0;
+            font-size: 18px;
+        }
+
+        .attach-btn:hover {
+            background: var(--border-light);
+            color: var(--text);
+        }
+
+        .input-wrap input[type="text"] {
             flex: 1;
             border: none;
             outline: none;
@@ -578,10 +600,10 @@
             font-size: 14px;
             font-family: inherit;
             color: var(--text);
-            padding: 10px 0;
+            padding: 10px 8px; /* Added slight padding for text */
         }
 
-        .input-wrap input::placeholder {
+        .input-wrap input[type="text"]::placeholder {
             color: var(--text-muted);
         }
 
@@ -721,6 +743,10 @@
         <!-- ═══ INPUT AREA ═══ -->
         <div class="input-area">
             <form id="chat-form" class="input-wrap">
+                <button type="button" class="attach-btn" id="attach-button" title="Attach Image" onclick="document.getElementById('file-input').click()">
+                    <i class="fas fa-plus"></i>
+                </button>
+                <input type="file" id="file-input" accept="image/*" style="display: none;" onchange="alert('This is a dummy upload button for UI purposes only.')">
                 <input type="text" id="message-input" placeholder="Ask a question about BIS..." autocomplete="off"
                     required>
                 <button type="submit" class="send-btn" id="send-button">
